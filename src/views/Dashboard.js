@@ -1,27 +1,6 @@
-/*!
-
-=========================================================
-* Black Dashboard React v1.2.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/black-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React from "react";
-// nodejs library that concatenates classes
+import React, { useState } from "react";
 import classNames from "classnames";
-// react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
-
-// reactstrap components
 import {
   Button,
   ButtonGroup,
@@ -41,8 +20,6 @@ import {
   Col,
   UncontrolledTooltip,
 } from "reactstrap";
-
-// core components
 import {
   chartExample1,
   chartExample2,
@@ -51,10 +28,82 @@ import {
 } from "variables/charts.js";
 
 function Dashboard(props) {
-  const [bigChartData, setbigChartData] = React.useState("data1");
+  const [bigChartData, setBigChartData] = useState("data1");
+  const [filter, setFilter] = useState("All");
+
   const setBgChartData = (name) => {
-    setbigChartData(name);
+    setBigChartData(name);
   };
+
+  const filterRows = (severity) => setFilter(severity);
+
+  const alerts = [
+    {
+      problemArea: "Furnace 44",
+      reportedBy: "Deer Park",
+      location: "Refinery Zone A",
+      description: "112°C under recommended temperature, raising emissions.",
+      severity: "High",
+      severityColor: "red",
+      iconClass: "tim-icons icon-alert-circle-exc",
+    },
+    {
+      problemArea: "Pump 32",
+      reportedBy: "Baytown",
+      location: "Pump Station 5",
+      description: "Leak detected, potential safety risk.",
+      severity: "Medium",
+      severityColor: "orange",
+      iconClass: "tim-icons icon-alert-circle-exc",
+    },
+    {
+      problemArea: "Compressor 19",
+      reportedBy: "Pasadena",
+      location: "Compressor Room 4",
+      description: "Frequent pressure fluctuations affecting system stability.",
+      severity: "Low",
+      severityColor: "green",
+      iconClass: "tim-icons icon-alert-circle-exc",
+    },
+    {
+      problemArea: "Tank 78",
+      reportedBy: "Deer Park",
+      location: "Storage Area 3",
+      description: "Increased vapor emissions due to seal degradation.",
+      severity: "High",
+      severityColor: "red",
+      iconClass: "tim-icons icon-alert-circle-exc",
+    },
+    {
+      problemArea: "Pipe 34",
+      reportedBy: "Baytown",
+      location: "Pipeline 12",
+      description: "Corrosion detected on pipe surface, requires inspection.",
+      severity: "Medium",
+      severityColor: "orange",
+      iconClass: "tim-icons icon-alert-circle-exc",
+    },
+    {
+      problemArea: "Furnace 61",
+      reportedBy: "Deer Park",
+      location: "Refinery Zone B",
+      description: "Gas leak detected, potential for increased emissions.",
+      severity: "High",
+      severityColor: "red",
+      iconClass: "tim-icons icon-alert-circle-exc",
+    },
+    {
+      problemArea: "Valve A9",
+      reportedBy: "Pasadena",
+      location: "Processing Unit 1",
+      description:
+        "Valve experiencing intermittent failures, impacting flow rates.",
+      severity: "Medium",
+      severityColor: "orange",
+      iconClass: "tim-icons icon-alert-circle-exc",
+    },
+  ];
+
   return (
     <>
       <div className="content">
@@ -64,8 +113,8 @@ function Dashboard(props) {
               <CardHeader>
                 <Row>
                   <Col className="text-left" sm="6">
-                    <h5 className="card-category">Total Shipments</h5>
-                    <CardTitle tag="h2">Performance</CardTitle>
+                    <h5 className="card-category">Emissions MTD</h5>
+                    <CardTitle tag="h2">Current Predictions</CardTitle>
                   </Col>
                   <Col sm="6">
                     <ButtonGroup
@@ -78,20 +127,13 @@ function Dashboard(props) {
                           active: bigChartData === "data1",
                         })}
                         color="info"
-                        id="0"
                         size="sm"
                         onClick={() => setBgChartData("data1")}
                       >
-                        <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                          Accounts
-                        </span>
-                        <span className="d-block d-sm-none">
-                          <i className="tim-icons icon-single-02" />
-                        </span>
+                        Emissions by Type
                       </Button>
                       <Button
                         color="info"
-                        id="1"
                         size="sm"
                         tag="label"
                         className={classNames("btn-simple", {
@@ -99,16 +141,10 @@ function Dashboard(props) {
                         })}
                         onClick={() => setBgChartData("data2")}
                       >
-                        <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                          Purchases
-                        </span>
-                        <span className="d-block d-sm-none">
-                          <i className="tim-icons icon-gift-2" />
-                        </span>
+                        Release Trends
                       </Button>
                       <Button
                         color="info"
-                        id="2"
                         size="sm"
                         tag="label"
                         className={classNames("btn-simple", {
@@ -116,12 +152,7 @@ function Dashboard(props) {
                         })}
                         onClick={() => setBgChartData("data3")}
                       >
-                        <span className="d-none d-sm-block d-md-block d-lg-block d-xl-block">
-                          Sessions
-                        </span>
-                        <span className="d-block d-sm-none">
-                          <i className="tim-icons icon-tap-02" />
-                        </span>
+                        Monthly Targets
                       </Button>
                     </ButtonGroup>
                   </Col>
@@ -139,67 +170,12 @@ function Dashboard(props) {
           </Col>
         </Row>
         <Row>
-          <Col lg="4">
-            <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Total Shipments</h5>
-                <CardTitle tag="h3">
-                  <i className="tim-icons icon-bell-55 text-info" /> 763,215
-                </CardTitle>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-area">
-                  <Line
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg="4">
-            <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Daily Sales</h5>
-                <CardTitle tag="h3">
-                  <i className="tim-icons icon-delivery-fast text-primary" />{" "}
-                  3,500€
-                </CardTitle>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-area">
-                  <Bar
-                    data={chartExample3.data}
-                    options={chartExample3.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col lg="4">
-            <Card className="card-chart">
-              <CardHeader>
-                <h5 className="card-category">Completed Tasks</h5>
-                <CardTitle tag="h3">
-                  <i className="tim-icons icon-send text-success" /> 12,100K
-                </CardTitle>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-area">
-                  <Line
-                    data={chartExample4.data}
-                    options={chartExample4.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
+          {/* Additional cards for data visualization */}
+          {/* Task section */}
           <Col lg="6" md="12">
             <Card className="card-tasks">
               <CardHeader>
-                <h6 className="title d-inline">Tasks(5)</h6>
+                <h6 className="title d-inline">Tasks (5)</h6>
                 <p className="card-category d-inline"> today</p>
                 <UncontrolledDropdown>
                   <DropdownToggle
@@ -212,24 +188,9 @@ function Dashboard(props) {
                     <i className="tim-icons icon-settings-gear-63" />
                   </DropdownToggle>
                   <DropdownMenu aria-labelledby="dropdownMenuLink" right>
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      Action
-                    </DropdownItem>
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      Another action
-                    </DropdownItem>
-                    <DropdownItem
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      Something else
-                    </DropdownItem>
+                    <DropdownItem>Action</DropdownItem>
+                    <DropdownItem>Another action</DropdownItem>
+                    <DropdownItem>Something else</DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </CardHeader>
@@ -248,24 +209,14 @@ function Dashboard(props) {
                             </Label>
                           </FormGroup>
                         </td>
-                        <td>
-                          <p className="title">Update the Documentation</p>
-                          <p className="text-muted">
-                            Dwuamish Head, Seattle, WA 8:47 AM
-                          </p>
-                        </td>
+                        <td>Inspect Pipeline 12 for Corrosion</td>
                         <td className="td-actions text-right">
-                          <Button
-                            color="link"
-                            id="tooltip636901683"
-                            title=""
-                            type="button"
-                          >
+                          <Button color="link" id="tooltip9" type="button">
                             <i className="tim-icons icon-pencil" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip636901683"
+                            target="tooltip9"
                             placement="right"
                           >
                             Edit Task
@@ -276,38 +227,71 @@ function Dashboard(props) {
                         <td>
                           <FormGroup check>
                             <Label check>
-                              <Input
-                                defaultChecked
-                                defaultValue=""
-                                type="checkbox"
-                              />
+                              <Input defaultValue="" type="checkbox" />
                               <span className="form-check-sign">
                                 <span className="check" />
                               </span>
                             </Label>
                           </FormGroup>
                         </td>
-                        <td>
-                          <p className="title">GDPR Compliance</p>
-                          <p className="text-muted">
-                            The GDPR is a regulation that requires businesses to
-                            protect the personal data and privacy of Europe
-                            citizens for transactions that occur within EU
-                            member states.
-                          </p>
-                        </td>
+                        <td>Calibrate Emission Sensors in Refinery Zone A</td>
                         <td className="td-actions text-right">
-                          <Button
-                            color="link"
-                            id="tooltip457194718"
-                            title=""
-                            type="button"
-                          >
+                          <Button color="link" id="tooltip10" type="button">
                             <i className="tim-icons icon-pencil" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip457194718"
+                            target="tooltip10"
+                            placement="right"
+                          >
+                            Edit Task
+                          </UncontrolledTooltip>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <FormGroup check>
+                            <Label check>
+                              <Input defaultValue="" type="checkbox" />
+                              <span className="form-check-sign">
+                                <span className="check" />
+                              </span>
+                            </Label>
+                          </FormGroup>
+                        </td>
+                        <td>Prepare Monthly Safety Inspection Report</td>
+                        <td className="td-actions text-right">
+                          <Button color="link" id="tooltip11" type="button">
+                            <i className="tim-icons icon-pencil" />
+                          </Button>
+                          <UncontrolledTooltip
+                            delay={0}
+                            target="tooltip11"
+                            placement="right"
+                          >
+                            Edit Task
+                          </UncontrolledTooltip>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <FormGroup check>
+                            <Label check>
+                              <Input defaultValue="" type="checkbox" />
+                              <span className="form-check-sign">
+                                <span className="check" />
+                              </span>
+                            </Label>
+                          </FormGroup>
+                        </td>
+                        <td>Review Compliance Logs for Emission Targets</td>
+                        <td className="td-actions text-right">
+                          <Button color="link" id="tooltip12" type="button">
+                            <i className="tim-icons icon-pencil" />
+                          </Button>
+                          <UncontrolledTooltip
+                            delay={0}
+                            target="tooltip12"
                             placement="right"
                           >
                             Edit Task
@@ -326,30 +310,22 @@ function Dashboard(props) {
                           </FormGroup>
                         </td>
                         <td>
-                          <p className="title">Solve the issues</p>
-                          <p className="text-muted">
-                            Fifty percent of all respondents said they would be
-                            more likely to shop at a company
-                          </p>
+                          Update Training Materials on Leak Detection Procedures
                         </td>
                         <td className="td-actions text-right">
-                          <Button
-                            color="link"
-                            id="tooltip362404923"
-                            title=""
-                            type="button"
-                          >
+                          <Button color="link" id="tooltip13" type="button">
                             <i className="tim-icons icon-pencil" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip362404923"
+                            target="tooltip13"
                             placement="right"
                           >
                             Edit Task
                           </UncontrolledTooltip>
                         </td>
                       </tr>
+
                       <tr>
                         <td>
                           <FormGroup check>
@@ -361,166 +337,68 @@ function Dashboard(props) {
                             </Label>
                           </FormGroup>
                         </td>
-                        <td>
-                          <p className="title">Release v2.0.0</p>
-                          <p className="text-muted">
-                            Ra Ave SW, Seattle, WA 98116, SUA 11:19 AM
-                          </p>
-                        </td>
+                        <td>Update PinHole Leak Documentation</td>
                         <td className="td-actions text-right">
-                          <Button
-                            color="link"
-                            id="tooltip818217463"
-                            title=""
-                            type="button"
-                          >
+                          <Button color="link" id="tooltip1" type="button">
                             <i className="tim-icons icon-pencil" />
                           </Button>
                           <UncontrolledTooltip
                             delay={0}
-                            target="tooltip818217463"
+                            target="tooltip1"
                             placement="right"
                           >
                             Edit Task
                           </UncontrolledTooltip>
                         </td>
                       </tr>
-                      <tr>
-                        <td>
-                          <FormGroup check>
-                            <Label check>
-                              <Input defaultValue="" type="checkbox" />
-                              <span className="form-check-sign">
-                                <span className="check" />
-                              </span>
-                            </Label>
-                          </FormGroup>
-                        </td>
-                        <td>
-                          <p className="title">Export the processed files</p>
-                          <p className="text-muted">
-                            The report also shows that consumers will not easily
-                            forgive a company once a breach exposing their
-                            personal data occurs.
-                          </p>
-                        </td>
-                        <td className="td-actions text-right">
-                          <Button
-                            color="link"
-                            id="tooltip831835125"
-                            title=""
-                            type="button"
-                          >
-                            <i className="tim-icons icon-pencil" />
-                          </Button>
-                          <UncontrolledTooltip
-                            delay={0}
-                            target="tooltip831835125"
-                            placement="right"
-                          >
-                            Edit Task
-                          </UncontrolledTooltip>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <FormGroup check>
-                            <Label check>
-                              <Input defaultValue="" type="checkbox" />
-                              <span className="form-check-sign">
-                                <span className="check" />
-                              </span>
-                            </Label>
-                          </FormGroup>
-                        </td>
-                        <td>
-                          <p className="title">Arival at export process</p>
-                          <p className="text-muted">
-                            Capitol Hill, Seattle, WA 12:34 AM
-                          </p>
-                        </td>
-                        <td className="td-actions text-right">
-                          <Button
-                            color="link"
-                            id="tooltip217595172"
-                            title=""
-                            type="button"
-                          >
-                            <i className="tim-icons icon-pencil" />
-                          </Button>
-                          <UncontrolledTooltip
-                            delay={0}
-                            target="tooltip217595172"
-                            placement="right"
-                          >
-                            Edit Task
-                          </UncontrolledTooltip>
-                        </td>
-                      </tr>
+                      {/* Repeat tasks */}
                     </tbody>
                   </Table>
                 </div>
               </CardBody>
             </Card>
           </Col>
+          {/* Alerts Section */}
           <Col lg="6" md="12">
             <Card>
               <CardHeader>
-                <CardTitle tag="h4">Simple Table</CardTitle>
+                <CardTitle tag="h4">Alerts & Notifications</CardTitle>
+                <ButtonGroup>
+                  <Button onClick={() => filterRows("All")}>All</Button>
+                  <Button onClick={() => filterRows("High")}>High</Button>
+                  <Button onClick={() => filterRows("Medium")}>Medium</Button>
+                </ButtonGroup>
               </CardHeader>
               <CardBody>
                 <Table className="tablesorter" responsive>
                   <thead className="text-primary">
                     <tr>
-                      <th>Name</th>
-                      <th>Country</th>
-                      <th>City</th>
-                      <th className="text-center">Salary</th>
+                      <th>Problem Area</th>
+                      <th>Reported By</th>
+                      <th>Location</th>
+                      <th>Description</th>
+                      <th className="text-center">Severity</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Dakota Rice</td>
-                      <td>Niger</td>
-                      <td>Oud-Turnhout</td>
-                      <td className="text-center">$36,738</td>
-                    </tr>
-                    <tr>
-                      <td>Minerva Hooper</td>
-                      <td>Curaçao</td>
-                      <td>Sinaai-Waas</td>
-                      <td className="text-center">$23,789</td>
-                    </tr>
-                    <tr>
-                      <td>Sage Rodriguez</td>
-                      <td>Netherlands</td>
-                      <td>Baileux</td>
-                      <td className="text-center">$56,142</td>
-                    </tr>
-                    <tr>
-                      <td>Philip Chaney</td>
-                      <td>Korea, South</td>
-                      <td>Overland Park</td>
-                      <td className="text-center">$38,735</td>
-                    </tr>
-                    <tr>
-                      <td>Doris Greene</td>
-                      <td>Malawi</td>
-                      <td>Feldkirchen in Kärnten</td>
-                      <td className="text-center">$63,542</td>
-                    </tr>
-                    <tr>
-                      <td>Mason Porter</td>
-                      <td>Chile</td>
-                      <td>Gloucester</td>
-                      <td className="text-center">$78,615</td>
-                    </tr>
-                    <tr>
-                      <td>Jon Porter</td>
-                      <td>Portugal</td>
-                      <td>Gloucester</td>
-                      <td className="text-center">$98,615</td>
-                    </tr>
+                    {alerts
+                      .filter(
+                        (alert) => filter === "All" || alert.severity === filter
+                      )
+                      .map((alert, index) => (
+                        <tr key={index}>
+                          <td>{alert.problemArea}</td>
+                          <td>{alert.reportedBy}</td>
+                          <td>{alert.location}</td>
+                          <td>{alert.description}</td>
+                          <td
+                            className="text-center"
+                            style={{ color: alert.severityColor }}
+                          >
+                            <i className={alert.iconClass} /> {alert.severity}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </Table>
               </CardBody>
