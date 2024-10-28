@@ -53,9 +53,7 @@ function Sidebar(props) {
           target="_blank"
           onClick={props.toggleSidebar}
         >
-          <div className="logo-img">
-            <img src={logo.imgSrc} alt="react-logo" />
-          </div>
+        
         </a>
       );
       logoText = (
